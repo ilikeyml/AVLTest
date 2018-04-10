@@ -32,14 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Avl.Net">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Adaptive Vision\Adaptive Vision Library 4.9\bin\Win32\Avl.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Avl.Net.Designers">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Adaptive Vision\Adaptive Vision Library 4.9\bin\Win32\Avl.Net.Designers.dll</HintPath>
-    </Reference>
-    <Reference Include="Avl.Net.TS">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Adaptive Vision\Adaptive Vision Library 4.9\bin\Win32\Avl.Net.TS.dll</HintPath>
+    <Reference Include="AltSerialize, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4d0a4c277ea23978, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\AltSerialize.dll</HintPath>
     </Reference>
     <Reference Include="GoSdkNet, Version=1.0.6641.26982, Culture=neutral, PublicKeyToken=3e18828f1dab5c8c, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>

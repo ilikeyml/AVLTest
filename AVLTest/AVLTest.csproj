@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AltSerialize, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4d0a4c277ea23978, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\AltSerialize.dll</HintPath>
+    </Reference>
     <Reference Include="Avl.Net">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Adaptive Vision\Adaptive Vision Library 4.9\bin\Win32\Avl.Net.dll</HintPath>
     </Reference>

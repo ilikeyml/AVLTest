@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 using PoinCloudLib;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using AvlNet;
+using AltSerialize;
 
 namespace CloudPointGenerator
 {
@@ -74,7 +74,7 @@ namespace CloudPointGenerator
         private void OnDataReceived(KObject data)
         {
             _dataList.Add(data);
-            if (_dataList.Count == 1)
+            if (_dataList.Count == 2)
             {
 
                 _context.Post(delegate
@@ -175,7 +175,7 @@ namespace CloudPointGenerator
                         ///
                         //generate csv file for point data save
                         ///
-                        pc.ProfileDict = new Dictionary<long, List<Point3D>>();
+                        pc.ProfileList = new List<List<Point3D>>();
                         int pointsCount = 0;
                         pc.Point3DArray = new Point3D[pc.Width * pc.Height];
                         for (int j = 0; j < pc.Height; j++)
@@ -184,11 +184,11 @@ namespace CloudPointGenerator
                             for (int k = 0; k < pc.Width; k++)
                             {
 
-                                AvlNet.Point3D tempPoint = new AvlNet.Point3D();
+                                Point3D tempPoint = new Point3D();
 
                                 tempPoint.X = pc.XOffset + k * pc.XResolution;
                                 tempPoint.Y = pc.YOffset + k * pc.YResolution;
-                                tempPoint.Z = (goSurfaceMsg.Get(k, j) == -32768) ? 0 : (pc.ZOffset + goSurfaceMsg.Get(k, j) * pc.ZResolution);
+                                tempPoint.Z = (goSurfaceMsg.Get(j, k) == -32768) ? 0 : (pc.ZOffset + goSurfaceMsg.Get(j, k) * pc.ZResolution);
                                 profileList.Add(tempPoint);
                                 pc.Point3DArray[pointsCount] = tempPoint;
                                 pointsCount++;
@@ -196,7 +196,7 @@ namespace CloudPointGenerator
                             }
 
 
-                            pc.ProfileDict.Add(j, profileList);
+                            pc.ProfileList.Add(profileList);
 
                         }
 
@@ -216,11 +216,12 @@ namespace CloudPointGenerator
         void SerializePointCloud(PointCloud pc)
         {
 
-            string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
-            BinaryFormatter bf = new BinaryFormatter();
-           
-            Stream stream = File.Open("C:\\PointCloudData\\" + timeStamp + ".pcd", FileMode.OpenOrCreate);      
-            bf.Serialize(stream, pc);
+            string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");        
+            Stream stream = File.Open("C:\\PointCloudData\\" + timeStamp + ".pcd", FileMode.OpenOrCreate);
+            AltSerialize.AltSerializer altSerializer = new AltSerializer(stream);
+            //XmlSerializer xmlSerializer = new XmlSerializer(typeof(PointCloud));
+            //xmlSerializer.Serialize(stream, pc);
+            altSerializer.Serialize(pc);
             stream.Flush();
             stream.Close();
 
