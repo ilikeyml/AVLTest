@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AvlTest));
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -38,7 +39,7 @@
             this.buttonROI = new System.Windows.Forms.Button();
             this.buttonLoad = new System.Windows.Forms.Button();
             this.MsgBox = new System.Windows.Forms.RichTextBox();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -95,7 +96,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.view3DBox1);
             this.splitContainer2.Size = new System.Drawing.Size(582, 741);
-            this.splitContainer2.SplitterDistance = 369;
+            this.splitContainer2.SplitterDistance = 368;
             this.splitContainer2.TabIndex = 0;
             // 
             // view2DBox1
@@ -104,7 +105,7 @@
             this.view2DBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.view2DBox1.Location = new System.Drawing.Point(0, 0);
             this.view2DBox1.Name = "view2DBox1";
-            this.view2DBox1.Size = new System.Drawing.Size(582, 369);
+            this.view2DBox1.Size = new System.Drawing.Size(582, 368);
             this.view2DBox1.TabIndex = 0;
             // 
             // view3DBox1
@@ -112,7 +113,7 @@
             this.view3DBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.view3DBox1.Location = new System.Drawing.Point(0, 0);
             this.view3DBox1.Name = "view3DBox1";
-            this.view3DBox1.Size = new System.Drawing.Size(582, 368);
+            this.view3DBox1.Size = new System.Drawing.Size(582, 369);
             this.view3DBox1.TabIndex = 0;
             // 
             // splitContainer3
@@ -146,20 +147,22 @@
             // 
             // buttonROI
             // 
-            this.buttonROI.Location = new System.Drawing.Point(48, 156);
+            this.buttonROI.Location = new System.Drawing.Point(48, 190);
             this.buttonROI.Name = "buttonROI";
             this.buttonROI.Size = new System.Drawing.Size(134, 56);
             this.buttonROI.TabIndex = 1;
             this.buttonROI.Text = "Draw ROI";
             this.buttonROI.UseVisualStyleBackColor = true;
+            this.buttonROI.Click += new System.EventHandler(this.buttonROI_Click);
             // 
             // buttonLoad
             // 
-            this.buttonLoad.Location = new System.Drawing.Point(48, 54);
+            this.buttonLoad.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonLoad.BackgroundImage")));
+            this.buttonLoad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonLoad.Location = new System.Drawing.Point(48, 23);
             this.buttonLoad.Name = "buttonLoad";
-            this.buttonLoad.Size = new System.Drawing.Size(134, 56);
+            this.buttonLoad.Size = new System.Drawing.Size(134, 107);
             this.buttonLoad.TabIndex = 0;
-            this.buttonLoad.Text = "Load Buffer";
             this.buttonLoad.UseVisualStyleBackColor = true;
             this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
             // 
@@ -171,6 +174,10 @@
             this.MsgBox.Size = new System.Drawing.Size(232, 366);
             this.MsgBox.TabIndex = 0;
             this.MsgBox.Text = "";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // AvlTest
             // 
@@ -210,7 +217,7 @@
         private System.Windows.Forms.RichTextBox MsgBox;
         private System.Windows.Forms.Button buttonROI;
         private System.Windows.Forms.Button buttonCalc;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

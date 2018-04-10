@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Avl.Net">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Adaptive Vision\Adaptive Vision Library 4.9\bin\Win32\Avl.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Avl.Net.Designers">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Adaptive Vision\Adaptive Vision Library 4.9\bin\Win32\Avl.Net.Designers.dll</HintPath>
+    </Reference>
+    <Reference Include="Avl.Net.TS">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Adaptive Vision\Adaptive Vision Library 4.9\bin\Win32\Avl.Net.TS.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

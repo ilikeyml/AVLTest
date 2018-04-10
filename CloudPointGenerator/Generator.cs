@@ -11,6 +11,9 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.InteropServices;
 using PoinCloudLib;
+using System.Threading.Tasks;
+using System.Diagnostics;
+using AvlNet;
 
 namespace CloudPointGenerator
 {
@@ -71,7 +74,7 @@ namespace CloudPointGenerator
         private void OnDataReceived(KObject data)
         {
             _dataList.Add(data);
-            if (_dataList.Count == 6)
+            if (_dataList.Count == 1)
             {
 
                 _context.Post(delegate
@@ -98,6 +101,7 @@ namespace CloudPointGenerator
 
 
 
+
         }
 
         private void BgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -106,16 +110,33 @@ namespace CloudPointGenerator
             _context.Post(delegate
             {
                 richTextBox1.AppendText(@"Completed" + Environment.NewLine);
+                sw.Stop();
+                richTextBox1.AppendText(@"Time Consuming:" + sw.ElapsedMilliseconds.ToString() + Environment.NewLine);
             }, null);
 
         }
-
+        Stopwatch sw = new Stopwatch();
         private void BgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+
+            sw.Start();
+
+            //ParallelLoopResult result = Parallel.For(0, _dataList.Count, (i, state) =>
+            //{
+            //    Point3DGenerator(_dataList[i]);
+
+            //});
+
+            //Parallel.ForEach(_dataList, (i) =>
+            //{
+            //    Point3DGenerator(i);
+            //});
+
             foreach (var item in _dataList)
             {
                 Point3DGenerator(item);
             }
+
         }
 
         BackgroundWorker bgWorker;
@@ -144,17 +165,46 @@ namespace CloudPointGenerator
 
                         GoSurfaceMsg goSurfaceMsg = (GoSurfaceMsg)(dataMsg);
                         pc.Width = goSurfaceMsg.Width;
-                        pc.Length = goSurfaceMsg.Length;
+                        pc.Height = goSurfaceMsg.Length;
+                        pc.XResolution = (float)goSurfaceMsg.XResolution / 1000000;
+                        pc.YResolution = (float)goSurfaceMsg.YResolution / 1000000;
+                        pc.ZResolution = (float)goSurfaceMsg.ZResolution / 1000000;
+                        pc.XOffset = (float)goSurfaceMsg.XOffset / 1000;
+                        pc.ZOffset = (float)goSurfaceMsg.ZOffset / 1000;
+                        pc.YOffset = (float)goSurfaceMsg.YOffset / 1000;
+                        ///
+                        //generate csv file for point data save
+                        ///
+                        pc.ProfileDict = new Dictionary<long, List<Point3D>>();
+                        int pointsCount = 0;
+                        pc.Point3DArray = new Point3D[pc.Width * pc.Height];
+                        for (int j = 0; j < pc.Height; j++)
+                        {
+                            List<Point3D> profileList = new List<Point3D>();
+                            for (int k = 0; k < pc.Width; k++)
+                            {
 
-                        //GoSurfaceMsg surfaceMsg = (GoSurfaceMsg)dataObj;
-                        //long width = surfaceMsg.Width;
-                        //long height = surfaceMsg.Length;
-                        long bufferSize = pc.Width * pc.Length;
-                        IntPtr bufferPointer = goSurfaceMsg.Data;
-                        pc.Range = new short[bufferSize];
-                        Marshal.Copy(bufferPointer, pc.Range, 0, pc.Range.Length);
+                                AvlNet.Point3D tempPoint = new AvlNet.Point3D();
+
+                                tempPoint.X = pc.XOffset + k * pc.XResolution;
+                                tempPoint.Y = pc.YOffset + k * pc.YResolution;
+                                tempPoint.Z = (goSurfaceMsg.Get(k, j) == -32768) ? 0 : (pc.ZOffset + goSurfaceMsg.Get(k, j) * pc.ZResolution);
+                                profileList.Add(tempPoint);
+                                pc.Point3DArray[pointsCount] = tempPoint;
+                                pointsCount++;
+
+                            }
+
+
+                            pc.ProfileDict.Add(j, profileList);
+
+                        }
+
+
+                        //data.Destroy();
+                        dataMsg.Destroy();
+                        goSurfaceMsg.Destroy();
                         SerializePointCloud(pc);
-
                         break;
                     default:
                         break;
@@ -168,8 +218,12 @@ namespace CloudPointGenerator
 
             string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
             BinaryFormatter bf = new BinaryFormatter();
-            Stream stream = File.Open("C:\\PointCloudData\\"+ timeStamp + ".pcd", FileMode.OpenOrCreate);
+           
+            Stream stream = File.Open("C:\\PointCloudData\\" + timeStamp + ".pcd", FileMode.OpenOrCreate);      
             bf.Serialize(stream, pc);
+            stream.Flush();
+            stream.Close();
+
         }
 
         private void Generator_FormClosing(object sender, FormClosingEventArgs e)

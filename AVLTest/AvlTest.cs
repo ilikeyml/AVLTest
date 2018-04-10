@@ -14,6 +14,7 @@ using HMI.Localization;
 using PoinCloudLib;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.InteropServices;
 
 
 namespace AVLTest
@@ -25,30 +26,28 @@ namespace AVLTest
             InitializeComponent();
         }
 
-        List<PointCloud> cloudBuffer = new List<PointCloud>();
+        PointCloud pc = new PointCloud();
 
         private void buttonLoad_Click(object sender, EventArgs e)
         {
-            folderBrowserDialog1.ShowDialog();
-            if(folderBrowserDialog1.SelectedPath != null)
+
+            openFileDialog1.ShowDialog();
+            if(openFileDialog1.FileName!=null)
             {
-                string filePath = folderBrowserDialog1.SelectedPath;
-                string[] filenames = Directory.GetFiles(filePath);
+
+                Stream stream = File.OpenRead(openFileDialog1.FileName);
                 BinaryFormatter bf = new BinaryFormatter();
-                foreach (var item in filenames)
-                {
-                    PointCloud pc = new PointCloud();
-                    pc = (PointCloud)bf.Deserialize(File.OpenRead(item));
-                    cloudBuffer.Add(pc);
-                }
-
-                MsgBox.AppendText("Total Buffer Loaded:" + cloudBuffer.Count.ToString() + Environment.NewLine);
-
-
-
-
+                pc = (PointCloud)bf.Deserialize(stream);
+                stream.Close();
+                Surface _surface = new Surface();
+             
+                AVL.ArrangePoint3DArray(pc.Point3DArray, 1, 1, 0, 1, PlainType.UInt8, out _surface);
+                view3DBox1.Data1.SetSurface(_surface);
 
             }
+
+
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -56,8 +55,10 @@ namespace AVLTest
 
         }
 
-
-
+        private void buttonROI_Click(object sender, EventArgs e)
+        {
+           
+        }
 
     }
 }
