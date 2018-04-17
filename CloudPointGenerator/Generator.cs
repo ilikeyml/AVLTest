@@ -14,6 +14,7 @@ using PoinCloudLib;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using AltSerialize;
+using System.Text;
 
 namespace CloudPointGenerator
 {
@@ -33,6 +34,8 @@ namespace CloudPointGenerator
         static string IPAddr = "127.0.0.1";
         List<KObject> _dataList = new List<KObject>();
         SynchronizationContext _context;
+
+        int QueueSize = 0;
 
         #endregion
 
@@ -67,19 +70,23 @@ namespace CloudPointGenerator
                 }, null);
             }
 
+
+
             _system.EnableData(true);
             _system.SetDataHandler(OnDataReceived);
+
         }
 
         private void OnDataReceived(KObject data)
         {
             _dataList.Add(data);
-            if (_dataList.Count == 2)
+
+            if (_dataList.Count == QueueSize)
             {
 
                 _context.Post(delegate
                 {
-                    richTextBox1.AppendText(@"Data Receive Finished" + Environment.NewLine);
+                    richTextBox1.AppendText(@"Data Receive Finished, Serialization starting......." + Environment.NewLine);
                     bgWorker.RunWorkerAsync();
                 }, null);
 
@@ -164,20 +171,27 @@ namespace CloudPointGenerator
                     case GoDataMessageType.Surface:
 
                         GoSurfaceMsg goSurfaceMsg = (GoSurfaceMsg)(dataMsg);
-                        pc.Width = goSurfaceMsg.Width;
-                        pc.Height = goSurfaceMsg.Length;
+                        pc.Width = (int)goSurfaceMsg.Width;
+                        pc.Height = (int)goSurfaceMsg.Length;
                         pc.XResolution = (float)goSurfaceMsg.XResolution / 1000000;
                         pc.YResolution = (float)goSurfaceMsg.YResolution / 1000000;
                         pc.ZResolution = (float)goSurfaceMsg.ZResolution / 1000000;
                         pc.XOffset = (float)goSurfaceMsg.XOffset / 1000;
                         pc.ZOffset = (float)goSurfaceMsg.ZOffset / 1000;
                         pc.YOffset = (float)goSurfaceMsg.YOffset / 1000;
+
+                        GoSetup goSetup = _sensor.Setup;
+                        GoRole goRole = new GoRole();
+                        pc.ZStart = (float)goSetup.GetActiveAreaZ(goRole);
+                        pc.XStart = (float)goSetup.GetActiveAreaX(goRole);
+                        pc.ZRange = (float)goSetup.GetActiveAreaHeight(goRole);
                         ///
                         //generate csv file for point data save
                         ///
                         pc.ProfileList = new List<List<Point3D>>();
-                        int pointsCount = 0;
+                        //int pointsCount = 0;
                         pc.Point3DArray = new Point3D[pc.Width * pc.Height];
+                        int pointsCount = 0;
                         for (int j = 0; j < pc.Height; j++)
                         {
                             List<Point3D> profileList = new List<Point3D>();
@@ -187,8 +201,12 @@ namespace CloudPointGenerator
                                 Point3D tempPoint = new Point3D();
 
                                 tempPoint.X = pc.XOffset + k * pc.XResolution;
-                                tempPoint.Y = pc.YOffset + k * pc.YResolution;
-                                tempPoint.Z = (goSurfaceMsg.Get(j, k) == -32768) ? 0 : (pc.ZOffset + goSurfaceMsg.Get(j, k) * pc.ZResolution);
+                                tempPoint.Y = pc.YOffset + j * pc.YResolution;
+                                //tempPoint.Z = (goSurfaceMsg.Get(j, k) == -32768) ? 0 : (pc.ZOffset + goSurfaceMsg.Get(j, k) * pc.ZResolution);
+                                //No Z  Start
+                                //tempPoint.X = k * pc.XResolution;
+                                //tempPoint.Y = j * pc.YResolution;
+                                tempPoint.Z = (goSurfaceMsg.Get(j, k) == -32768) ? 0 : (pc.ZOffset + goSurfaceMsg.Get(j, k) * pc.ZResolution - pc.ZStart);
                                 profileList.Add(tempPoint);
                                 pc.Point3DArray[pointsCount] = tempPoint;
                                 pointsCount++;
@@ -216,7 +234,7 @@ namespace CloudPointGenerator
         void SerializePointCloud(PointCloud pc)
         {
 
-            string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");        
+            string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
             Stream stream = File.Open("C:\\PointCloudData\\" + timeStamp + ".pcd", FileMode.OpenOrCreate);
             AltSerialize.AltSerializer altSerializer = new AltSerializer(stream);
             //XmlSerializer xmlSerializer = new XmlSerializer(typeof(PointCloud));
@@ -229,9 +247,19 @@ namespace CloudPointGenerator
 
         private void Generator_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _sensor.Stop();
-            _system.Disconnect();
-            _system.Dispose();
+
+            if (_sensor != null || _system != null)
+            {
+                _sensor.Stop();
+                _system.Disconnect();
+                _system.Dispose();
+            }
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(textBox1.Text, out QueueSize);
         }
     }
 }

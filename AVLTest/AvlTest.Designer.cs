@@ -40,6 +40,7 @@
             this.buttonLoad = new System.Windows.Forms.Button();
             this.MsgBox = new System.Windows.Forms.RichTextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.buttonTest = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -125,6 +126,7 @@
             // 
             // splitContainer3.Panel1
             // 
+            this.splitContainer3.Panel1.Controls.Add(this.buttonTest);
             this.splitContainer3.Panel1.Controls.Add(this.buttonCalc);
             this.splitContainer3.Panel1.Controls.Add(this.buttonROI);
             this.splitContainer3.Panel1.Controls.Add(this.buttonLoad);
@@ -138,16 +140,17 @@
             // 
             // buttonCalc
             // 
-            this.buttonCalc.Location = new System.Drawing.Point(48, 258);
+            this.buttonCalc.Location = new System.Drawing.Point(48, 215);
             this.buttonCalc.Name = "buttonCalc";
             this.buttonCalc.Size = new System.Drawing.Size(134, 56);
             this.buttonCalc.TabIndex = 2;
             this.buttonCalc.Text = "Flatness";
             this.buttonCalc.UseVisualStyleBackColor = true;
+            this.buttonCalc.Click += new System.EventHandler(this.buttonCalc_Click);
             // 
             // buttonROI
             // 
-            this.buttonROI.Location = new System.Drawing.Point(48, 190);
+            this.buttonROI.Location = new System.Drawing.Point(48, 153);
             this.buttonROI.Name = "buttonROI";
             this.buttonROI.Size = new System.Drawing.Size(134, 56);
             this.buttonROI.TabIndex = 1;
@@ -178,6 +181,16 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // buttonTest
+            // 
+            this.buttonTest.Location = new System.Drawing.Point(48, 291);
+            this.buttonTest.Name = "buttonTest";
+            this.buttonTest.Size = new System.Drawing.Size(134, 56);
+            this.buttonTest.TabIndex = 3;
+            this.buttonTest.Text = "Test";
+            this.buttonTest.UseVisualStyleBackColor = true;
+            this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
             // 
             // AvlTest
             // 
@@ -218,6 +231,7 @@
         private System.Windows.Forms.Button buttonROI;
         private System.Windows.Forms.Button buttonCalc;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button buttonTest;
     }
 }
 

@@ -35,6 +35,8 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.buttonStart = new System.Windows.Forms.Button();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -42,11 +44,13 @@
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -85,6 +89,10 @@
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.Controls.Add(this.buttonConnect);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.groupBox1);
             this.splitContainer2.Size = new System.Drawing.Size(437, 494);
             this.splitContainer2.SplitterDistance = 218;
             this.splitContainer2.TabIndex = 0;
@@ -142,6 +150,24 @@
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(49, 48);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 21);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Location = new System.Drawing.Point(114, 87);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(200, 100);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "QueueSize";
+            // 
             // Generator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -157,12 +183,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -176,6 +205,8 @@
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
