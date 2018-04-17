@@ -19,11 +19,11 @@ namespace PoinCloudLib
         public RegionStride[] RegionStrides { get => regionStrides; set => regionStrides = value; }
         #endregion
 
-        RegionClass GetRegionFromRect(Rectangle rect)
+        public RegionClass GetRegionFromRect(Rectangle rect)
         {
 
             RegionClass rc = new RegionClass();
-            regionSize = 0;
+            rc.regionSize = 0;
             rc.regionStrides = new RegionStride[rect.Height];
             //rc.regionSize = rc.RegionStrides.Length;
 
@@ -32,8 +32,10 @@ namespace PoinCloudLib
                 rc.RegionStrides[i].StartPoint = new Point(rect.Left, rect.Top + i);
                 rc.RegionStrides[i].EndPoint = new Point(rect.Right, rect.Top + i);
                 rc.RegionStrides[i].RunLength = rc.RegionStrides[i].EndPoint.X - rc.RegionStrides[i].StartPoint.X;
-                regionSize += rc.RegionStrides[i].RunLength;
+                rc.regionSize += rc.RegionStrides[i].RunLength;
             }
+
+
             return rc;
         }
 

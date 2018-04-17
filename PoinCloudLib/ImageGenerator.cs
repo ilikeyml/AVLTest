@@ -52,23 +52,35 @@ namespace PoinCloudLib
             int[] imageRawData = GrayScaleDataKeepRatio(pc);
             //int[] imageRawData = GrayScaleData(pc);
             Bitmap bitmap = new Bitmap(pc.Width, pc.Height, PixelFormat.Format24bppRgb);
-            //BitmapData _bmpData = bitmap.LockBits(new Rectangle(0, 0, pc.Width, pc.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-            //IntPtr intPtr = _bmpData.Scan0;
 
 
-            //Marshal.Copy(imageRawData, 0, intPtr, imageRawData.Length);
-            //bitmap.UnlockBits(_bmpData);
-
-
+            BitmapData _bmpData = bitmap.LockBits(new Rectangle(0, 0, pc.Width, pc.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
             int index = 0;
-            for (int i = 0; i < bitmap.Height; i++)
+            unsafe
             {
-                for (int j = 0; j < bitmap.Width; j++)
+                byte* ptr = (byte*)(_bmpData.Scan0);
+                for (int x = 0; x < _bmpData.Width; x++)
                 {
-                    bitmap.SetPixel(j, i, Color.FromArgb(255, imageRawData[index], imageRawData[index], imageRawData[index]));
-                    index++;
+                    for (int y = 0; y < _bmpData.Height; y++)
+                    {
+                        ptr[0] = ptr[1] = ptr[2] = (byte)imageRawData[index];
+                        ptr += 3;
+                        index++;
+                    }
+                    ptr += _bmpData.Stride - _bmpData.Width * 3;
                 }
             }
+            bitmap.UnlockBits(_bmpData);
+
+            //int index = 0;
+            //for (int i = 0; i < bitmap.Height; i++)
+            //{
+            //    for (int j = 0; j < bitmap.Width; j++)
+            //    {
+            //        bitmap.SetPixel(j, i, Color.FromArgb(255, imageRawData[index], imageRawData[index], imageRawData[index]));
+            //        index++;
+            //    }
+            //}
             return bitmap;
         }
 
@@ -145,6 +157,17 @@ namespace PoinCloudLib
                 data[indexColor] = GrayDataTrans(item.Z, pc.ZRange);
                 indexColor++;
             }
+
+
+            //int[] data = new int[pc.Height * pc.Width *3];
+            //long indexColor = 0;
+            //foreach (var item in pc.Point3DArray)
+            //{
+            //    data[indexColor] = GrayDataTrans(item.Z, pc.ZRange);
+            //    data[indexColor+1] = GrayDataTrans(item.Z, pc.ZRange);
+            //    data[indexColor+2] = GrayDataTrans(item.Z, pc.ZRange);
+            //    indexColor += 3;
+            //}
             return data;
         }
 

@@ -238,6 +238,7 @@ namespace AVLTest
         {
             //Bitmap bmp =   ImageGenerator.GrayScaleImageGenerator(pc);
             Bitmap bmp = ImageGenerator.GrayScaleImageGeneratorKeepRatio(pc);
+            
             view2DBox1.SetImage(new AvlNet.Image(bmp));
 
             //Draw Region

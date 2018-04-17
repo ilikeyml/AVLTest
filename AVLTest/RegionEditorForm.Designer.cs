@@ -34,6 +34,7 @@
             this.buttonThreshold = new System.Windows.Forms.Button();
             this.buttonFlatness = new System.Windows.Forms.Button();
             this.buttonRect = new System.Windows.Forms.Button();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -62,6 +63,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.richTextBox1);
             this.splitContainer1.Panel2.Controls.Add(this.buttonThreshold);
             this.splitContainer1.Panel2.Controls.Add(this.buttonFlatness);
             this.splitContainer1.Panel2.Controls.Add(this.buttonRect);
@@ -79,7 +81,7 @@
             // 
             // buttonThreshold
             // 
-            this.buttonThreshold.Location = new System.Drawing.Point(25, 374);
+            this.buttonThreshold.Location = new System.Drawing.Point(25, 303);
             this.buttonThreshold.Name = "buttonThreshold";
             this.buttonThreshold.Size = new System.Drawing.Size(145, 104);
             this.buttonThreshold.TabIndex = 2;
@@ -88,7 +90,7 @@
             // 
             // buttonFlatness
             // 
-            this.buttonFlatness.Location = new System.Drawing.Point(25, 187);
+            this.buttonFlatness.Location = new System.Drawing.Point(25, 164);
             this.buttonFlatness.Name = "buttonFlatness";
             this.buttonFlatness.Size = new System.Drawing.Size(145, 104);
             this.buttonFlatness.TabIndex = 1;
@@ -105,6 +107,14 @@
             this.buttonRect.Text = "Rect";
             this.buttonRect.UseVisualStyleBackColor = true;
             this.buttonRect.Click += new System.EventHandler(this.buttonRect_Click);
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(12, 413);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(179, 179);
+            this.richTextBox1.TabIndex = 3;
+            this.richTextBox1.Text = "";
             // 
             // RegionEditorForm
             // 
@@ -131,5 +141,6 @@
         private System.Windows.Forms.Button buttonFlatness;
         private System.Windows.Forms.Button buttonRect;
         private LMI.Gocator.Tools.ImageBoxEx imageBoxEx1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
